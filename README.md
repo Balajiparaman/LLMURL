@@ -1,5 +1,5 @@
 # LLMURL
-LLM App that provides answers when user prompts regarding the contents of a URL page.
+LLM App that provides answers when user prompts regarding the contents of a URL page. This is still a work in progress.
 
 # License
 The MIT License (MIT)
