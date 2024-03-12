@@ -3,7 +3,7 @@ from flask import requests, jsonify
 from app.services import openai_service, pinecone_service, scraping_service
 from app.utils.helper_functions import chunk_text, build_prompt
 
-PINECONE_INDEX_NAME = 'index007'
+PINECONE_INDEX_NAME = "index007"
 
 
 @api_blueprint.route("/embed-and-store", methods=["POST"])
