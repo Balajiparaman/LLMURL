@@ -1,9 +1,10 @@
+import logging
 from . import api_blueprint
-from flask import requests, jsonify
+from flask import request, jsonify
 from app.services import openai_service, pinecone_service, scraping_service
 from app.utils.helper_functions import chunk_text, build_prompt
 
-PINECONE_INDEX_NAME = "index007"
+PINECONE_INDEX_NAME = "index237"
 
 
 @api_blueprint.route("/embed-and-store", methods=["POST"])
@@ -14,14 +15,22 @@ def embed_and_store():
     2. Embedding the texts
     3. Uploading to the vector database
     '''
-    url = requests.json["url"]
-    url_text = scraping_service.scrape_website(url)
-    chunks = chunk_text(url_text)
-    pinecone_service.embed_chunks_and_upload_to_pinecone(
-        chunks, PINECONE_INDEX_NAME)
-    response_json = {
-        "message": "Chunks embedded and uploaded successfully to Pinecone"
-    }
+    logging.basicConfig(level=logging.DEBUG)
+
+    try:
+        url = request.json["url"]
+        logging.debug(f"Received URL: {url}")
+        url_text = scraping_service.scrape_website(url)
+        chunks = chunk_text(url_text)
+        pinecone_service.embed_chunks_and_upload_to_pinecone(
+            chunks, PINECONE_INDEX_NAME)
+        response_json = {
+            "message": "Chunks embedded and uploaded successfully to Pinecone"
+        }
+
+    except Exception as e:
+        logging.error(f"Error processing request:{e}")
+        response_json = {"error": "Failed to process request"}
 
     return jsonify(response_json)
 
