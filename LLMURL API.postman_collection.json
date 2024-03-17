@@ -1,0 +1,38 @@
+{
+	"info": {
+		"_postman_id": "3a4261a2-0dca-467f-b6f8-9ab68b6e0dcc",
+		"name": "LLMURL API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33666458"
+	},
+	"item": [
+		{
+			"name": "Embed-and-Store",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"url\":\"https://dev.to/bobur/how-to-build-a-custom-gpt-enabled-full-stack-app-for-real-time-data-38k8\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5000/embed-and-store",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"embed-and-store"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
