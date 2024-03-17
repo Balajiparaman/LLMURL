@@ -1,12 +1,12 @@
-import pinecone
+from pinecone import Pinecone, PodSpec
 from app.services.openai_service import get_embedding
 import os
 
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
 
-pinecone.init(api_key=PINECONE_API_KEY)
+pc = Pinecone(api_key=PINECONE_API_KEY)
 
-EMBEDDING_DIM = 256
+EMBEDDING_DIM = 1536
 
 
 def embed_chunks_and_upload_to_pinecone(chunks, index_name):
@@ -16,15 +16,17 @@ def embed_chunks_and_upload_to_pinecone(chunks, index_name):
     for efficient similarity search based on these embeddings.
 
     '''
-    if index_name in pinecone.list_indexes():
+    if index_name in pc.list_indexes():
         # if index name already exists within Pinecone, delete it.
-        pinecone.delete_index(name=index_name)
+        pc.delete_index(name=index_name)
 
-    pinecone.create_index(name=index_name,
-                          dimensions=EMBEDDING_DIM,
-                          metric="cosine")
+    pc.create_index(name=index_name,
+                    dimension=EMBEDDING_DIM,
+                    spec=PodSpec(environment="gcp-starter",
+                                 pod_type="s1.x1"),
+                    metric="cosine")
 
-    index = pinecone.Index(index_name)
+    index = pc.Index(index_name)
 
     embeddings_with_ids = []
     for i, chunk in enumerate(chunks):
