@@ -1,4 +1,4 @@
 # LLMURL
-LLM based app that provides answers when user prompts regarding the contents of a URL page. This is still a work in progress.
+This app takes the user's question regarding the contents of a website as input along with the website's URL as context. This is still a work in progress.
 
 
