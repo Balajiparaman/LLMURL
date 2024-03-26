@@ -1,3 +1,4 @@
+import logging
 from pinecone import Pinecone, PodSpec
 from app.services.openai_service import get_embedding
 import os
@@ -16,7 +17,10 @@ def embed_chunks_and_upload_to_pinecone(chunks, index_name):
     for efficient similarity search based on these embeddings.
 
     '''
-    if index_name in pc.list_indexes():
+    logging.basicConfig(level=logging.debug)
+
+    if index_name in pc.list_indexes().names():
+        logging.debug(f"index_name {index_name}")
         # if index name already exists within Pinecone, delete it.
         pc.delete_index(name=index_name)
 
@@ -29,7 +33,10 @@ def embed_chunks_and_upload_to_pinecone(chunks, index_name):
     index = pc.Index(index_name)
 
     embeddings_with_ids = []
+    logging.debug(f"chunk length {len(chunks)}")
+    logging.debug(f"enumerated chunks {list(enumerate(chunks))}")
     for i, chunk in enumerate(chunks):
+        logging.debug(f"chunk {i} length {len(chunk)}")
         embedding = get_embedding(chunk)
         embeddings_with_ids.append((str(i), embedding, chunk))
 

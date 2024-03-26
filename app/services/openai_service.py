@@ -1,11 +1,13 @@
 import os
 import json
 import requests
+import logging
 
+logging.basicConfig(level=logging.DEBUG)
 
 OPENAI_API_KEY = os.environ.get("OPENAI_API_KEY")
 OPENAI_EMBEDDING_MODEL = "text-embedding-ada-002"
-LLM_MODEL = "gpt-4-turbo-preview"
+LLM_MODEL = "gpt-3.5-turbo"
 
 
 def get_embedding(chunk):
@@ -18,9 +20,12 @@ def get_embedding(chunk):
         "model": OPENAI_EMBEDDING_MODEL,
         "input": chunk
     }
+    logging.debug(f"embedding chunk: {data}")
     response = requests.post(url, headers=headers, data=json.dumps(data))
     response_json = response.json()
+    logging.debug(f"response json: {response_json}")
     embedding = response_json["data"][0]["embedding"]
+    logging.debug(f"embedding: {embedding}")
 
     return embedding
 
